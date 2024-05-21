@@ -200,4 +200,17 @@ class CheckData {
     var client = await db;
     client.rawQuery('DELETE FROM expenses WHERE id = ?', [id]);
   }
+
+  //total
+  Future totalInventory() async {
+    var client = await db;
+    return await client.rawQuery(
+        'SELECT strftime("%Y-%m", date) AS month, SUM(sBoar) AS Total_sBoar, SUM(jBoar) AS Total_jBoar,  SUM(drySow) AS Total_drySow, SUM(lactatingSow) AS Total_lactatingSow, SUM(rplcmentGlit) AS Total_rplcmentGlit, SUM(glitBreed) AS Total_glitBreed FROM dailyInvetory GROUP BY strftime("%Y-%m", date)');
+  }
+
+  Future totalExpenses() async {
+    var client = await db;
+    return await client.rawQuery(
+        'SELECT strftime("%Y-%m", date) AS month, type as tottype, SUM(amount) AS Total_amount FROM expenses GROUP BY type');
+  }
 }
